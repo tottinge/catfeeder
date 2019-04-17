@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Is It Time to Feed The Cat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    
+    var currentTimer = 0;
+
+    $(document).ready( function(){
+        onTimeout();
+        const button = $('#button').click(function(){
+            if (!!currentTimer) {
+                clearTimeout(currentTimer);
+            }
+            notFeedingTime();
+            logFeeding();
+            currentTimer = setTimeout(onTimeout, hours(5.5));
+        });
+    })
+
+    function notFeedingTime(){
+        $('#instruction').html("<h1>Don't feed the cat</h1>")
+
+        const button = $("#button");
+        button.removeClass("button-ready");
+        button.addClass("button-block");
+        button.html("I did it anyway.")
+    }
+
+    function onTimeout(){
+        $('#instruction').html("<h1>Time to Feed the Cat</h1>")
+
+        const button = $("#button");
+        button.removeClass("button-block");
+        button.addClass("button-ready"); 
+        button.html("I Fed The Cat");
+        currentTimer = 0;
+    }
+
+    function logFeeding() {
+        const logList = $("ul");    
+        var newItem = $('<li/>', {
+            html: getDisplayTime()
+        });
+        const saved = logList.children().slice(0,5);
+        logList.empty();
+        logList.append(saved);
+        logList.prepend(newItem);
+    }
+
+    function getDisplayTime() {
+        const now = new Date().toString().split(' ');
+        const day = now[0];
+        const time = now[4].slice(0,5);
+        return day + ', ' + time;
+    }
+
+    function hours(numberOfHours){
+        return numberOfHours * 60 * 60 * 1000;
+    }
+    </script>
+    <style>
+        body {
+            background-color: #E2CBBF;
+            color: #49341a;
+        }
+        #instruction {
+            font-size: 23;
+            text-align: center;
+        }
+        button {
+            padding: 15x 25px;
+            height: 100px;
+            width: 300px;
+            border-radius: 12px;
+            margin: 0px auto;
+            color: #aa8558;
+        }
+        .button-ready {
+            background-color: #c3c9ac;
+            font-size: 18px;
+        }
+        .button-block {
+            background-color: #C0AD77;
+            font-size: 16px;
+        }
+        #log {
+            border-color: gray;
+            margin: 0px auto;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            background-color: #C0AD77;
+
+        }
+        ul li:first-child {
+            font-size: large;
+            font-weight: bold;
+        }
+        .wrapper {
+            display: grid;
+        }
+
+    </style>
+
+<head>
+
+<body>
+    <div class="wrapper">
+        <div id="instruction">Instructions</div>
+        <button id="button">FEEDING THE CAT</button>
+        
+        <div id="log">
+            <h3>Last 5 Feedings:</h3>
+            <ul></ul>
+        </div>
+    </div>
+</body>
+
+</html>
